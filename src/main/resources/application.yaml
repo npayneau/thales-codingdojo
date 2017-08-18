@@ -1,0 +1,7 @@
+server:
+  port: 5858
+  context-path: /api
+
+security:
+  basic:
+    enabled: false
