@@ -1,7 +1,7 @@
 # Thales coding dojo
 
-* Atelier 1 : Mise en place de deux micro-services chacun représentant un domaine fonctionnel (Ressource « collaborateur » et ressource « compétence »)
-    * Création des projets et des jar standalone
+* Atelier 1 : Mise en place de d'un microservices représentant la gestion des employees et de leurs compétences (Ressource « collaborateur » et ressource « compétence »)
+    * Création du projet et du jar standalone
     * Définition des ressources et de l’API CRUD pour chacune
     * Mise en place des tests unitaire en JUnit 5 associé
     * Bouchonnage pour les tests
