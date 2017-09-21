@@ -1,0 +1,20 @@
+server:
+  port: 1111
+  context-path: /api
+
+security:
+  basic:
+    enabled: false
+
+logging:
+    file: log/employees.log
+    level:
+        #root: DEBUG
+        com.thales: DEBUG
+    pattern:
+      file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} ---------- %msg%n"
+
+thales:
+    properties:
+      pOne: Properties 1
+      pTwo: Properties 2
