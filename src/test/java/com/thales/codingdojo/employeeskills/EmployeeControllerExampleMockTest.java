@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -25,40 +26,36 @@ import java.util.Date;
 import java.util.HashSet;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
-@WebAppConfiguration
-public class EmployeeControllerTest {
+@WebMvcTest(EmployeesController.class)
+public class EmployeeControllerExampleMockTest {
 
+    @Autowired
     private MockMvc mockWebApp;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    @Autowired
+    @MockBean
     private EmployeeRepository repo;
 
-    @Before
-    public void init() throws ParseException {
-        this.mockWebApp = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        repo.save(new Employee(null,"Payneau", "Nicolas", localDateToDate(LocalDate.of(1985, Month.DECEMBER, 12)), new HashSet<Skill>()));
-        repo.save(new Employee(null,"Guillet", "Matthieu", localDateToDate(LocalDate.of(1985, Month.APRIL, 12)), new HashSet<Skill>()));
-        repo.save(new Employee(null,"Florian", "Dupond", localDateToDate(LocalDate.of(1955, Month.AUGUST, 12)), new HashSet<Skill>()));
-    }
 
     private Date localDateToDate(LocalDate ld) throws ParseException {
         return new SimpleDateFormat("yyyy-MM-dd").parse(ld.toString());
     }
 
     @Test
-    public void getEmployees() throws Exception {
-        mockWebApp.perform(get("/employees"))
+    public void getEmployeeById() throws Exception {
+        given(repo.findOne(1L)).willReturn(new Employee(null,"Test", "Test", localDateToDate(LocalDate.of(1985, Month.DECEMBER, 12)), new HashSet<Skill>()));
+
+        mockWebApp.perform(get("/employees/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.[0].firstName", is("Payneau")));
+                .andExpect(jsonPath("$.firstName", is("Test")));
     }
 }
