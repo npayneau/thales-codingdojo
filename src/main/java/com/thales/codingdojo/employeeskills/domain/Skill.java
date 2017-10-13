@@ -21,7 +21,7 @@ public class Skill implements Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name="skill_generator", sequenceName="skill_sequence", initialValue = 100)
+    @SequenceGenerator(name="skill_generator", sequenceName="skill_sequence"    )
     @GeneratedValue(generator = "skill_generator")
     private Long id;
 
@@ -33,7 +33,7 @@ public class Skill implements Serializable{
 
     @Column(nullable = false)
     @Enumerated(EnumType.ORDINAL)
-    private SkillGroup group;
+    private SkillGroup category;
 
     @ManyToMany(mappedBy = "skills")
     @JsonIgnore

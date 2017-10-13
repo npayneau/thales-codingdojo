@@ -26,7 +26,7 @@ public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name="employee_generator", sequenceName="employee_sequence", initialValue = 10)
+    @SequenceGenerator(name="employee_generator", sequenceName="employee_sequence")
     @GeneratedValue(generator = "employee_generator")
     private Long id;
 
@@ -37,8 +37,8 @@ public class Employee implements Serializable {
     private String lastName;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy", timezone="GMT")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
     private Date birthDate;
 
     @ManyToMany(cascade = CascadeType.ALL)

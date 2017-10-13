@@ -49,7 +49,7 @@ public class SkillsController {
     @Transactional
     @PostMapping(value = "/skills", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Skill createSkill(@RequestBody Skill skill){
-        log.debug("Create skill: {} {} {}", skill.getName(), skill.getDescription(), skill.getGroup());
+        log.debug("Create skill: {} {} {}", skill.getName(), skill.getDescription(), skill.getCategory());
         return skillRepository.save(skill);
     }
 
