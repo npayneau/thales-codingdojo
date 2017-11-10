@@ -29,6 +29,11 @@ public class CodingDojoConfiguration extends WebMvcConfigurerAdapter {
         }*/
 
     @Override
+    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+        configurer.defaultContentType(MediaType.APPLICATION_JSON);
+    }
+
+    @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.enableContentNegotiation(
                 new MappingJackson2XmlView(),
