@@ -31,42 +31,42 @@ public class EmployeesController {
 
 
     @Transactional(readOnly = true)
-    @GetMapping(value = "/employees", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/employees", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<Employee> readEmployees(){
         log.debug("Get employees with properties: {} {} {}", propertyOne, propertyTwo, "Test");
         return StreamSupport.stream(employeeRepository.findAll().spliterator(),false).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    @GetMapping(value = "/employees/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/employees/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public Employee readEmployee(@PathVariable(value="id") Long id){
         log.debug("Get on employee: {}", id);
         return employeeRepository.findOne(id);
     }
 
     @Transactional(readOnly = true)
-    @GetMapping(value = "/employees/{id}/skills", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/employees/{id}/skills", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public Set<Skill> readEmployeeSkills(@PathVariable(value="id") Long id){
         log.debug("Get on employee: {}", id);
         return employeeRepository.findOne(id).getSkills();
     }
 
     @Transactional
-    @PostMapping(value = "/employees", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/employees", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public Employee createEmployees(@RequestBody Employee employee){
         log.debug("Create employee: {} {} {}", employee.getFirstName(), employee.getLastName(), employee.getBirthDate());
         return employeeRepository.save(employee);
     }
 
     @Transactional
-    @PutMapping(value = "/employees", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = "/employees", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public Employee updateEmployee(@RequestBody Employee employee){
         log.debug("Update employee: {}", employee.getId());
         return employeeRepository.save(employee);
     }
 
     @Transactional
-    @DeleteMapping(value = "/employees/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = "/employees/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity deleteEmployee(@RequestBody Employee employee){
         log.debug("Delete employee: {}", employee.getId());
         employeeRepository.delete(employee);
