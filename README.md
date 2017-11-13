@@ -5,4 +5,4 @@
     * Mise en place de la pagination
     * Mise en place de filtrage simple
     * Mise en place du tri
-    * Mise en place des projections
+    * Mise en place de la possibilité d'avoir un champs "fields" et "exclude_fields" sur la ressource Skill
