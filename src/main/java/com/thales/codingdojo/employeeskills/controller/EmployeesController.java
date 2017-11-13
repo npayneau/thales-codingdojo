@@ -1,21 +1,30 @@
 package com.thales.codingdojo.employeeskills.controller;
 
-import com.thales.codingdojo.employeeskills.domain.Employee;
-import com.thales.codingdojo.employeeskills.domain.Skill;
-import com.thales.codingdojo.employeeskills.service.EmployeeRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.thales.codingdojo.employeeskills.domain.Employee;
+import com.thales.codingdojo.employeeskills.domain.Skill;
+import com.thales.codingdojo.employeeskills.service.EmployeeRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
@@ -39,24 +48,31 @@ public class EmployeesController {
     }
 
     @Transactional(readOnly = true)
-    @GetMapping(value = "/employees/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public Employee readEmployee(@PathVariable(value="id") Long id){
-        log.debug("Get on employee: {}", id);
-        return employeeRepository.findOne(id);
-    }
-
-    @Transactional(readOnly = true)
-    @GetMapping(value = "/employees/search", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(value = "/employees", params = {"lastName", "firstName"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<Employee> searchEmployees(@RequestParam(value="lastName") String lastName, @RequestParam(value="firstName") String firstName){
-        log.debug("Search employees by lastname and firstname: {} {}", lastName, firstName);
+        log.debug("Search employees by lastname or firstname: {} {}", lastName, firstName);
 		return employeeRepository.findByLastNameOrFirstNameOrderByFirstNameAscAllIgnoreCase(lastName, firstName);
     }
 
     @Transactional(readOnly = true)
-    @GetMapping(value = "/employees/olders", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public List<Employee> getOlderEmployees(@RequestParam(value="birthDate") Date birthDate){
+    @GetMapping(value = "/employees", params = "lastName", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public List<Employee> searchEmployees(@RequestParam(value="lastName") String lastName){
+        log.debug("Search employees with lastname starting with : {}", lastName);
+		return employeeRepository.findByLastNameStartingWith(lastName);
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping(value = "/employees", params = "birthDateBefore", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public List<Employee> searchEmployees(@RequestParam(value="birthDateBefore", required = false) Date birthDate){
         log.debug("Count employees with birth date earlier than : {}", birthDate);
 		return employeeRepository.getByBirthDateBefore(birthDate);
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping(value = "/employees/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public Employee readEmployee(@PathVariable(value="id") Long id){
+        log.debug("Get on employee: {}", id);
+        return employeeRepository.findOne(id);
     }
     
     @Transactional(readOnly = true)
