@@ -15,7 +15,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     List<Employee> findByLastName(String lastname);
 
-    List<Employee> findByLastNameOrFirstNameAllIgnoreCase(String lastname, String firstname, Sort sort);
+    List<Employee> findByLastNameAndFirstNameAllIgnoreCase(String lastname, String firstname, Sort sort);
 
     List<Employee> findByLastNameOrderByFirstNameAsc(String lastname);
     
@@ -25,7 +25,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
     
     Employee findFirstByOrderByLastNameAsc();
     
-    List<Employee> findTop10ByLastName(String lastname, Pageable pageable);
+    List<Employee> findTop10ByLastName(String lastname);
 
     @Query("select e from Employee e where e.lastName like ?1%")
     List<Employee> findByLastNameStartingWith(String lastName, Sort sort);

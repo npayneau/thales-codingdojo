@@ -52,7 +52,7 @@ public class EmployeesController {
     @GetMapping(value = "/employees", params = {"lastName", "firstName"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<Employee> searchEmployees(@RequestParam(value="lastName") String lastName, @RequestParam(value="firstName") String firstName, Sort sort){
         log.debug("Search employees by lastname or firstname: {} {}", lastName, firstName);
-		return employeeRepository.findByLastNameOrFirstNameAllIgnoreCase(lastName, firstName, sort);
+		return employeeRepository.findByLastNameAndFirstNameAllIgnoreCase(lastName, firstName, sort);
     }
 
     @Transactional(readOnly = true)
